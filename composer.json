@@ -1,5 +1,5 @@
 {
-    "name": "tiup/tiup_sdk",
+    "name": "tiup/tiupsdk",
     "description": "tiup sdk",
     "type": "library",
     "minimum-stability": "stable",
