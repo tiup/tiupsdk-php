@@ -1,0 +1,21 @@
+{
+    "name": "tiup/tiup_sdk",
+    "description": "tiup sdk",
+    "type": "library",
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Tiup\\": "src/Tiup/"
+        }
+    },
+    "license": "TiUP",
+    "authors": [
+        {
+            "name": "lizw",
+            "email": "lizw@tiup.us"
+        }
+    ],
+    "require": {
+        "curl/curl": "^1.6"
+    }
+}
