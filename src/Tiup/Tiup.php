@@ -100,7 +100,7 @@ class Tiup
 	 */
 	public function me(AccessToken $accessToken){
 		$curl = new Curl\Curl();
-		$user = $this->get('apis/oauth2/v1/userinfo',array(), $accessToken);
+		$user = $this->get('apis/oauth2/v1/user',array(), $accessToken);
 		return $user;
 	}
 
