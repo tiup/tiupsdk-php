@@ -18,12 +18,13 @@ class Tiup
 	//应用的 token 调用内部接口使用
 	protected $app_token;
 
-	public function __construct($config = array())
+	public function __construct($config = array(), $cache = null)
 	{
 		$this->auth_host = $config['auth_host'];
 		$this->api_host = $config['api_host'];
 		$this->client_id = $config['client_id'];
 		$this->client_secret = $config['client_secret'];
+		$this->cache = $cache;
 	}
 
 	/**
@@ -126,7 +127,6 @@ class Tiup
 			$accessToken = $this->getAppToken();
 		}
 		$authorization = $accessToken->getAuthorization();
-		
 		$curl = new Curl\Curl;
 		$curl->setHeader('Authorization', $authorization);
 		if($payload && !empty($params)){
@@ -143,10 +143,25 @@ class Tiup
 
 	public function getAppToken($scope = null){
 		if($this->app_token == null){
-			$params = array(
-				'grant_type' => 'client_credentials'
-				);
-			$this->app_token = $this->_getAccessToken($params);
+			$token = '';
+			if($this->cache){
+				$cache_key = 'app_token:'.$this->client_id;
+				$token = $this->cache->get($cache_key);
+			}
+			
+			if($token){
+				$this->app_token = $token;
+			}else{
+				$params = array(
+					'grant_type' => 'client_credentials'
+					);
+				$this->app_token = $this->_getAccessToken($params);
+
+				if($this->cache){
+					$expire = ($this->app_token->getExpiresAt() - time()) / 60;
+					$this->cache->put($cache_key, $this->app_token, $expire);
+				}
+			}
 		}
 		
 		return $this->app_token;
