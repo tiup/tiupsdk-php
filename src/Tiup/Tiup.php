@@ -142,7 +142,8 @@ class Tiup
 	}
 
 	public function getAppToken($scope = null){
-		if($this->app_token == null){
+		//app token 不再做属性存储
+		//if($this->app_token == null){
 			$token = '';
 			if($this->cache){
 				$cache_key = 'app_token:'.$this->client_id;
@@ -162,7 +163,7 @@ class Tiup
 					$this->cache->put($cache_key, $this->app_token, $expire);
 				}
 			}
-		}
+		//}
 		
 		return $this->app_token;
 	}
