@@ -121,6 +121,11 @@ class Tiup
 		return $ret;
 	}
 
+	public function post($endpoint, $params, $accessToken = '', $payload = true){
+		$ret = $this->request($endpoint, $params, 'patch', $accessToken, $payload);
+		return $ret;
+	}
+
 	private function request($endpoint, $params, $method = "get", $accessToken = '', $payload = true){
 		$url = $this->api_host.$endpoint;
 		if(empty($accessToken)){
