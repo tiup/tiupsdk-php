@@ -24,6 +24,7 @@ class Tiup
 		$this->api_host = $config['api_host'];
 		$this->client_id = $config['client_id'];
 		$this->client_secret = $config['client_secret'];
+		$this->time_out = $config['time_out'];
 		$this->cache = $cache;
 	}
 
@@ -122,7 +123,7 @@ class Tiup
 	}
 
 	public function post($endpoint, $params, $accessToken = '', $payload = true){
-		$ret = $this->request($endpoint, $params, 'patch', $accessToken, $payload);
+		$ret = $this->request($endpoint, $params, 'post', $accessToken, $payload);
 		return $ret;
 	}
 
@@ -133,12 +134,16 @@ class Tiup
 		}
 		$authorization = $accessToken->getAuthorization();
 		$curl = new Curl\Curl;
+		$time = $this->time_out ? $this->time_out : 30000;
+		$curl->setOpt('CURLOPT_CONNECTTIMEOUT_MS')
 		$curl->setHeader('Authorization', $authorization);
 		if($payload && !empty($params)){
 			$params = json_encode($params);
 		}
+		if(empty($payload)){
+			$payload = [];
+		}
 		$curl->$method($url, $params, $payload);
-		
 		if ($curl->error) {
 			throw new TiupException("curl error ".$curl->error_message.' '.$curl->response, 1);
 
@@ -179,3 +184,4 @@ class Tiup
     }
 
 }
+
