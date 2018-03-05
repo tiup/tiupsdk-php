@@ -8,7 +8,7 @@
             "Tiup\\": "src/Tiup/"
         }
     },
-    "license": "TiUP",
+    "license": "MIT",
     "authors": [
         {
             "name": "lizw",
